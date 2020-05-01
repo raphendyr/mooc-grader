@@ -14,6 +14,7 @@ from util import export
 from util.files import (
     clean_submission_dir,
     read_and_remove_submission_meta,
+    read_submission_meta,
     write_submission_meta,
 )
 from util.http import post_data
@@ -352,61 +353,3 @@ def _type_dict(dict_item, dict_types):
     if "type" in base:
         del base["type"]
     return base
-
-
-def container_post(request):
-    '''
-    Proxies the grading result from inside container to A+
-    '''
-    sid = request.POST.get("sid", None)
-    if not sid:
-        return HttpResponseForbidden("Missing sid")
-
-    meta = read_and_remove_submission_meta(sid)
-    if meta is None:
-        return HttpResponseForbidden("Invalid sid")
-    #clean_submission_dir(meta["dir"])
-
-
-    data = {
-        "points": int(request.POST.get("points", 0)),
-        "max_points": int(request.POST.get("max_points", 1)),
-    }
-    for key in ["error", "grading_data"]:
-        if key in request.POST:
-            data[key] = request.POST[key]
-    if "error" in data and data["error"].lower() in ("no", "false"):
-        del data["error"]
-
-    feedback = request.POST.get("feedback", "")
-    # Fetch the corresponding exercise entry from the config.
-    lang = meta["lang"]
-    (course, exercise) = config.exercise_entry(meta["course_key"], meta["exercise_key"], lang=lang)
-    if "feedback_template" in exercise:
-        # replace the feedback with a rendered feedback template if the exercise is configured to do so
-        # it is not feasible to support all of the old feedback template variables that runactions.py
-        # used to have since the grading actions are not configured in the exercise YAML file anymore
-        required_fields = { 'points', 'max_points', 'error', 'out' }
-        result = MonitoredDict({
-            "points": data["points"],
-            "max_points": data["max_points"],
-            "out": feedback,
-            "error": data.get("error", False),
-            "title": exercise.get("title", ""),
-        })
-        translation.activate(lang)
-        feedback = template_to_str(course, exercise, None, exercise["feedback_template"], result=result)
-        if result.accessed.isdisjoint(required_fields):
-            alert = template_to_str(
-                course, exercise, None,
-                "access/feedback_template_did_not_use_result_alert.html")
-            feedback = alert + feedback
-        # Make unicode results ascii.
-        feedback = feedback.encode("ascii", "xmlcharrefreplace")
-
-    data["feedback"] = feedback
-
-    if not post_data(meta["url"], data):
-        write_submission_meta(sid, meta)
-        return HttpResponse("Failed to deliver results", status=502)
-    return HttpResponse("Ok")

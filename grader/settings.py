@@ -29,6 +29,7 @@ INSTALLED_APPS = (
     'staticfileserver', # override for runserver command, thus this needs to be before django contrib one
     'django.contrib.staticfiles',
     'access',
+    'asyncjob',
 )
 ADD_APPS = (
     #'gitmanager',

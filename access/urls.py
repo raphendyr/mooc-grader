@@ -1,11 +1,10 @@
 from django.conf.urls import url
 
-from access import views
+from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^test-result$', views.test_result, name='test-result'),
-    url(r'^container-post$', views.container_post, name='container-post'),
     url(r'^ajax/([\w-]+)/([\w-]+)$', views.exercise_ajax, name='ajax'),
     url(r'^model/([\w-]+)/([\w-]+)/([\w\d\_\-\.]*)$', views.exercise_model, name='model'),
     url(r'^exercise_template/([\w-]+)/([\w-]+)/([\w\d\_\-\.]*)$', views.exercise_template, name='exercise_template'),

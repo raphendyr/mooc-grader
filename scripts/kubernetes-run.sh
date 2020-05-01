@@ -1,11 +1,9 @@
 #!/bin/sh
-SID=$1
-GRADER_HOST=$2
-DOCKER_IMAGE=$3
-EXERCISE_MOUNT=$4
-SUBMISSION_MOUNT=$5
-CMD=$6
-COURSE_CONFIG=$7
-EXERCISE_CONFIG=$8
-
-ssh -o StrictHostKeyChecking=no grader@k8s-admin.cs.hut.fi "/home/grader/run-grader.py $SID $GRADER_HOST $DOCKER_IMAGE $EXERCISE_MOUNT $SUBMISSION_MOUNT '$CMD' '$COURSE_CONFIG' '$EXERCISE_CONFIG'"
+set -- "$1" "http://$(hostname -i):8080" "$3" "$4" "$5" "$6" "$7" "$8"
+#echo
+#for i in `seq $#`; do
+#    eval "arg=\${$i}"
+#    echo " -- \$$i=$arg"
+#done
+#echo "-"
+exec /local/venv_grader/bin/python3 /srv/grader/scripts/kubernetes-run.py "$@"

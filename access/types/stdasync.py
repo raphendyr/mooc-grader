@@ -350,6 +350,7 @@ def _acceptSubmission(request, course, exercise, post_url, sdir):
     write_submission_meta(sid, {
         "url": surl,
         "dir": sdir,
+        'personalized_exercise': exercise_extra.get("personalized_exercise"),
         "course_key": course["key"],
         "exercise_key": exercise["key"],
         "lang": translation.get_language(),
