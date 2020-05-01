@@ -224,12 +224,60 @@ acceptGeneralForm = acceptAsync
 acceptPost = acceptAsync
 
 
+GIT_FIELDS = _parse_fields_and_files({'fields': [
+    'name': 'git',
+    'filename': 'gitsource',
+    'type': 'string',
+    'pattern': '([\w]+://)?[-\w.@:/~]+',
+]})
+
+from urllib.parse import urlsplit
+
 @cached_view_type
 def acceptGitAddress(request, course, exercise, post_url):
     '''
     Presents a template and accepts Git URL for grading.
     '''
     result = None
+
+    if request.method == 'POST':
+        result, values, files = _parse_post_and_validate(request, GIT_FIELDS)
+        error, address = values[0]
+        if not result not error:
+            netloc, path = urlsplit(address)[1:3]
+            # netloc=, path=git@domain:path  ->  netloc=git@domain, path=path
+            if not netloc and ':' in path:
+                netloc, path = path.split(':', 1)
+            # netloc=git@domain  ->  netloc=domain
+            if '@' in netloc:
+                netloc = netloc.split('@', 1)[1]
+            # path=foo/bar.git/  ->  path=foo/bar.git
+            path = path.rstrip('/')
+            # path=foo/bar/baz.git  ->  path=bar/baz.git
+            path = '/'.join(path.split('/')[-2:])
+            # path=bar/baz  ->  path=bar/baz.git
+            if not path.endswith('.git'):
+                path += '.git'
+
+            if "require_gitlab" in exercise and netloc != exercise["require_gitlab"]:
+                result['invalid_address'] = True
+            else:
+                address = 'ssh://git@%s/%s' % (netloc, path)
+            
+
+
+        result['rejected'] = True
+        result['invalid_address'] = True
+        result['fields'] = [
+            dict(error=error, value=value, **field)
+            for field, (error, value) in zip(field_defs, values)
+        ]
+    else:
+        result['fields'] = GIT_FIELDS
+
+    return render_configured_template(
+        request, course, exercise, post_url,
+        "access/accept_git_default.html", result)
 
     # Receive post.
     if request.method == "POST" and "git" in request.POST and request.POST["git"].strip():
