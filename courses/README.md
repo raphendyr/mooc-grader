@@ -189,6 +189,8 @@ but this should be avoided and no documentation is provided for it.
 			which is also used on server side to validate the input using `re.match('^<pattern>$', value)`
 		* `rows` (optional): changes default value of `type` to `text` and
 			changes HTML attribute `rows` from default 6 to the one provided
+		* `validationMessage` (optional): set a message, which is shown when input data is not acceptable;
+			If type is `number` or `integer`, or `pattern` is set, then a default message is provided
 
 		Only for `file` type:
 

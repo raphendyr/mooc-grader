@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MOOC-grader\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-01 15:30+0000\n"
+"POT-Creation-Date: 2020-05-05 17:30+0000\n"
 "PO-Revision-Date: 2020-05-01 18:31+0300\n"
 "Last-Translator: Jaakko Kantojärvi <jaakko.kantojarvi@aalto.fi>\n"
 "Language-Team: Finnish <>\n"
@@ -30,6 +30,7 @@ msgstr "Palauta ainakin %(num_files)s seuraavista tiedostoista."
 #: access/templates/access/accept_files_form.html:42
 #: access/templates/access/accept_general_form.html:42
 #: access/templates/access/accept_post_form.html:42
+#: access/types/schema_form.py:232
 msgid "Can contain an integer number"
 msgstr "Voi sisältää kokonaisluvun"
 
@@ -37,6 +38,7 @@ msgstr "Voi sisältää kokonaisluvun"
 #: access/templates/access/accept_files_form.html:45
 #: access/templates/access/accept_general_form.html:45
 #: access/templates/access/accept_post_form.html:45
+#: access/types/schema_form.py:235
 msgid "Can contain a decimal number"
 msgstr "Voi sisältää liukuluvun"
 
@@ -52,6 +54,7 @@ msgstr "Sisällön tulee vastata säännöllistä lauseketta '%(pattern)s'"
 #: access/templates/access/accept_files_form.html:60
 #: access/templates/access/accept_general_form.html:60
 #: access/templates/access/accept_post_form.html:60
+#: access/types/schema_form.py:700
 msgid "This field is required"
 msgstr "Kenttä on pakollinen"
 
@@ -315,15 +318,15 @@ msgstr ""
 "    </p>\n"
 "    "
 
-#: access/templates/access/graded_form.html:37
+#: access/templates/access/graded_form.html:38
 msgid "Incorrect"
 msgstr "Väärin"
 
-#: access/templates/access/graded_form.html:39
+#: access/templates/access/graded_form.html:40
 msgid "Correct"
 msgstr "Oikein"
 
-#: access/templates/access/graded_form.html:47
+#: access/templates/access/graded_form.html:48
 #, python-format
 msgid ""
 "\n"
@@ -340,7 +343,7 @@ msgstr[1] ""
 "\n"
 "%(points)s pistettä"
 
-#: access/templates/access/graded_form.html:136
+#: access/templates/access/graded_form.html:137
 msgid "Correct answer"
 msgstr "Oikea vastaus"
 
@@ -408,14 +411,23 @@ msgstr ""
 "Pahoittelemme häiriötä.\n"
 "Yritä myöhemmin uudelleen tai ota yhteyttä kurssihenkilökuntaan."
 
-#: access/types/forms.py:690
+#: access/types/forms.py:693
 msgid "Multiple choices are selectable."
 msgstr "Voit valita useita vaihtoehtoja."
 
-#: access/types/forms.py:808
+#: access/types/forms.py:811
 msgid "Multiple correct answers accepted."
 msgstr "Useita oikeita vastauksia."
 
-#: access/types/forms.py:812
+#: access/types/forms.py:815
 msgid "Correct parts in your answer: "
 msgstr "Oikeat osat vastauksessasi: "
+
+#: access/types/schema_form.py:277
+#, python-brace-format
+msgid "Content must match regular expression '{pattern}'"
+msgstr "Sisällön tulee vastata säännöllistä lauseketta '{pattern}'"
+
+#: access/types/schema_form.py:703
+msgid "Invalid content"
+msgstr "Epäkelpo sisältö"

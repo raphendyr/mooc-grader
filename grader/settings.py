@@ -44,6 +44,7 @@ MIDDLEWARE_CLASSES = (
     # 'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     # 'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'grader.debug.LogRequestsMiddleware',
 )
 
 TEMPLATES = [

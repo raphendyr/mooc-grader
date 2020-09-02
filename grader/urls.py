@@ -12,6 +12,9 @@ if 'gitmanager' in settings.INSTALLED_APPS:
 import access.urls
 urlpatterns.append(url(r'^', include(access.urls)))
 
+import asyncjob.urls
+urlpatterns.append(url(r'^', include(asyncjob.urls)))
+
 if settings.DEBUG:
     import staticfileserver.urls
     urlpatterns.append(url(r'^', include(staticfileserver.urls)))

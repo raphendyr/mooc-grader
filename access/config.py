@@ -483,6 +483,7 @@ class ConfigParser:
         '''
         config_file = self._get_config(os.path.join(course_dir, exercise_key))
         data = self._parse(config_file)
+        # FIXME: data may be None -> TypeError
         if "include" in data:
             data = self._include(data, config_file, course_dir)
         return config_file, os.path.getmtime(config_file), data

@@ -8,3 +8,4 @@ docutils==0.12
 python-magic==0.4.11
 
 kubernetes
+uwsgi
